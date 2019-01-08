@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue Quickstart</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            border: 1px solid #333;
+            width: 100%;
+        }
+        table thead th, tbody td, tfoot td {
+            padding: 5px;
+            border: 1px solid #ccc;
+            background: #e2e2e2;
+        }
+        table thead th {
+            font-weight: bold;
+        }
+        table tfoot td {
+            text-align: right;
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Vue App</h1>
+
+        <div id="app">
+            <h2>Total inventory: {{ totalInventory }} product(s)</h2>
+            <table>
+                </button>
+                <thead>
+                    <tr>
+                        <th>#id</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Actions </th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            Total products: {{ totalProducts }}
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr v-for="product in products">
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>
+                            <input type="number" name="quantity" v-model.number="product.quantity">
+                        </td>
+                        <td>
+                            <button @click="product.quantity += 1">
+                                Add new Product
+                            </button>
+                            <button @click="product.quantity -= 1">
+                                Remove Product
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </div>
+    </div>
+</body>
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            //message: 'Hello Vue.js!'
+            products: []
+        },
+        computed: {
+            totalInventory() {
+                return this.products.reduce((total, currentValue, currentIndex, arr) => {
+                        return total += parseInt(currentValue.quantity);
+                }, 0);
+            },
+            totalProducts() {
+                return this.products.length;
+            }
+        },
+        created() {
+            fetch('https://api.myjson.com/bins/ges0o')
+                .then(response => response.json())
+                .then(json => {
+                    this.products = json.products
+                })
+        }
+    })
+</script>
+</html>
