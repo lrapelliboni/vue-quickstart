@@ -1,2 +1,2 @@
 # vue-quickstart
-vuejs quickstart
+[Vue.js](https://vuejs.org/) quickstart
